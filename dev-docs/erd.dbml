@@ -1,0 +1,131 @@
+Table Users {
+  id integer [pk]
+  username varchar [not null, unique]
+  password varchar [not null]
+  email varchar [not null, unique]
+  first_name varchar
+  last_name varchar
+  is_staff boolean
+  is_active boolean
+  date_joined datetime
+}
+
+Table Customers {
+  id integer [pk]
+  user_id integer [not null, unique]
+  address varchar
+  phone_number varchar
+  created_at datetime
+}
+
+Table Stores {
+  id integer [pk]
+  seller_id integer [not null, unique]
+  name varchar [not null]
+  description text
+  created_at datetime
+}
+
+Table Categories {
+  id integer [pk]
+  name varchar [not null]
+}
+
+Table Products {
+  id integer [pk]
+  seller_id integer [not null]
+  category_id integer [not null]
+  name varchar [not null]
+  price decimal [not null]
+  description text
+  quantity integer [not null]
+  location varchar
+  image_path text
+  created_at datetime
+}
+
+Table Orders {
+  id integer [pk]
+  customer_id integer [not null]
+  payment_type_id integer
+  created_at datetime
+  completed_at datetime
+  is_open boolean [not null, default: true]
+}
+
+Table OrderProducts {
+  id integer [pk]
+  order_id integer [not null]
+  product_id integer [not null]
+  quantity integer [not null, default: 1]
+
+  Note: 'Referenced as "lineitems" in the API (e.g. /lineitems/n). This table name may be updated as the project evolves to match the API terminology.'
+}
+
+Table PaymentTypes {
+  id integer [pk]
+  customer_id integer [not null]
+  merchant_name varchar [not null]
+  account_number varchar [not null]
+  expiration_date date
+  create_date date
+}
+
+Table CustomerFavorites {
+  id integer [pk]
+  customer_id integer [not null]
+  store_id integer [not null]
+}
+
+Table ProductLikes {
+  id integer [pk]
+  customer_id integer [not null]
+  product_id integer [not null]
+}
+
+Table ProductRecommendations {
+  id integer [pk]
+  product_id integer [not null]
+  recommender_id integer [not null]
+  recipient_id integer [not null]
+  created_at datetime
+}
+
+Table ProductRatings {
+  id integer [pk]
+  customer_id integer [not null]
+  product_id integer [not null]
+  rating integer [not null]
+  review text
+  created_at datetime
+}
+
+// Relationships
+
+Ref: Customers.user_id > Users.id
+
+Ref: Stores.seller_id > Customers.id
+
+Ref: Products.seller_id > Customers.id
+Ref: Products.category_id > Categories.id
+
+Ref: Orders.customer_id > Customers.id
+Ref: Orders.payment_type_id > PaymentTypes.id
+
+Ref: OrderProducts.order_id > Orders.id
+Ref: OrderProducts.product_id > Products.id
+
+Ref: PaymentTypes.customer_id > Customers.id
+
+Ref: CustomerFavorites.customer_id > Customers.id
+Ref: CustomerFavorites.store_id > Stores.id
+
+Ref: ProductLikes.customer_id > Customers.id
+Ref: ProductLikes.product_id > Products.id
+
+Ref: ProductRecommendations.product_id > Products.id
+Ref: ProductRecommendations.recommender_id > Customers.id
+Ref: ProductRecommendations.recipient_id > Customers.id
+
+Ref: ProductRatings.customer_id > Customers.id
+Ref: ProductRatings.product_id > Products.id
