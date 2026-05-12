@@ -1,4 +1,5 @@
 import '../global.css'
+import '../design/design.css'
 
 export default function Bangazon({ Component, pageProps }) {
   // Use the layout defined at the page level, if available

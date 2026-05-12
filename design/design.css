@@ -1,0 +1,62 @@
+/* ============================================================
+   Bangazon Design Tokens
+   Swap the color values here when brand colors are finalized.
+   ============================================================ */
+:root {
+  /* Primary — placeholder slate blue */
+  --color-primary:       #3d5a80;
+  --color-primary-light: #98c1d9;
+  --color-primary-dark:  #293241;
+
+  /* Secondary — placeholder warm coral */
+  --color-secondary:       #e07a5f;
+  --color-secondary-light: #f2b5a0;
+  --color-secondary-dark:  #b85c42;
+
+  /* Focus ring — primary color at reduced opacity for keyboard focus outlines */
+  --color-focus-ring: rgba(61, 90, 128, 0.5);
+}
+
+.button {
+  transition: all 0.2s ease-in-out;
+}
+
+.button:hover:not(.is-static):not([disabled]) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+  filter: brightness(1.05);
+}
+
+.button:active:not(.is-static):not([disabled]) {
+  transform: translateY(0);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+.button:focus-visible {
+  outline: 3px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* opt-in hover lift for Card — applied when hoverable prop is true */
+.card-hoverable {
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.card-hoverable:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(10, 10, 10, 0.08);
+}
+
+.tag.is-clickable {
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+}
+
+.tag.is-clickable:hover i {
+  filter: brightness(1.2);
+}
+
+.tag.is-clickable:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
