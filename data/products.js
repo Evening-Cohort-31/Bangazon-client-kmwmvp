@@ -1,6 +1,6 @@
 import { fetchWithResponse, fetchWithoutResponse } from './fetcher'
 
-export function getProducts(query=undefined) {
+export function getProducts(query = undefined) {
   let url = 'products'
 
   if (query) {
@@ -15,7 +15,7 @@ export function getProducts(query=undefined) {
 }
 
 export function getCategories() {
-  return fetchWithResponse('categories', {
+  return fetchWithResponse('productcategories', {
     headers: {
       Authorization: `Token ${localStorage.getItem('token')}`
     }
@@ -100,7 +100,7 @@ export function recommendProduct(id, username) {
       Authorization: `Token ${localStorage.getItem('token')}`,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({username})
+    body: JSON.stringify({ username })
   })
 }
 

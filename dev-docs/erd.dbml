@@ -34,7 +34,6 @@ Table Categories {
 Table Products {
   id integer [pk]
   seller_id integer [not null]
-  category_id integer [not null]
   name varchar [not null]
   price decimal [not null]
   description text
@@ -42,6 +41,17 @@ Table Products {
   location varchar
   image_path text
   created_at datetime
+}
+
+Table ProductCategories {
+  id integer [pk]
+  product_id integer [not null]
+  category_id integer [not null]
+
+  indexes {
+    (product_id, category_id) [unique]
+  }
+  Note: 'Join table allowing one product to belong to multiple categories and one category to contain multiple products.'
 }
 
 Table Orders {
@@ -107,7 +117,9 @@ Ref: Customers.user_id > Users.id
 Ref: Stores.seller_id > Customers.id
 
 Ref: Products.seller_id > Customers.id
-Ref: Products.category_id > Categories.id
+
+Ref: ProductCategories.product_id > Products.id
+Ref: ProductCategories.category_id > Categories.id
 
 Ref: Orders.customer_id > Customers.id
 Ref: Orders.payment_type_id > PaymentTypes.id
