@@ -71,10 +71,10 @@ export default function Cart() {
             className="card-footer-item"
             onClick={() => setShowCompleteForm(true)}
           >
-            Complete Order
+            Complete Purchase
           </a>
           <a className="card-footer-item" onClick={deleteOrder}>
-            Delete Order
+            Delete Cart
           </a>
         </>
       </CardLayout>
