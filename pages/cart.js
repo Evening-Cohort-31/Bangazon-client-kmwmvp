@@ -7,7 +7,7 @@ import CartDetail from "../components/order/detail";
 import CompleteFormModal from "../components/order/form-modal";
 import { completeCurrentOrder, getCart } from "../data/orders";
 import { getPaymentTypes } from "../data/payment-types";
-import { removeProductFromOrder } from "../data/products";
+import { deleteCart, removeProductFromOrder } from "../data/products";
 
 export default function Cart() {
   const [cart, setCart] = useState({});
@@ -40,6 +40,18 @@ export default function Cart() {
     );
   };
 
+  const deleteOrder = () => {
+    if (
+      window.confirm(
+        "Are you sure you want to delete all the items in your cart?",
+      )
+    ) {
+      deleteCart().then(() => {
+        setCart({});
+      });
+    }
+  };
+
   const removeProduct = (productId) => {
     removeProductFromOrder(productId).then(refresh);
   };
@@ -59,9 +71,11 @@ export default function Cart() {
             className="card-footer-item"
             onClick={() => setShowCompleteForm(true)}
           >
-            Complete Order
+            Complete Purchase
           </a>
-          <a className="card-footer-item">Delete Order</a>
+          <a className="card-footer-item" onClick={deleteOrder}>
+            Delete Cart
+          </a>
         </>
       </CardLayout>
     </>

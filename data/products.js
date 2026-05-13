@@ -60,6 +60,15 @@ export function deleteProduct(id) {
   })
 }
 
+export function deleteCart() {
+  return fetchWithoutResponse('cart/delete_all', {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Token ${localStorage.getItem('token')}`
+    }
+  })
+}
+
 export function rateProduct(productId, rating) {
   return fetchWithResponse(`products/${productId}/rate-product`, {
     method: 'POST',
