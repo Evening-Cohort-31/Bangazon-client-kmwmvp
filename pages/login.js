@@ -1,61 +1,69 @@
-import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useRef } from 'react'
-import { Input } from '../components/form-elements'
+import { useRef, useState } from 'react'
 import Layout from '../components/layout'
 import Navbar from '../components/navbar'
 import { useAppContext } from '../context/state'
 import { login } from '../data/auth'
+import { Button, Title, Form, FormField } from '../design'
 
 export default function Login() {
-  const {setToken} = useAppContext()
+  const { setToken } = useAppContext()
   const username = useRef('')
   const password = useRef('')
   const router = useRouter()
 
+  const [loginError, setLoginError] = useState(null)
+
   const submit = (e) => {
     e.preventDefault()
+    setLoginError(null)
+
     const user = {
       username: username.current.value,
       password: password.current.value,
     }
 
-    login(user).then((res) => {
-      if (res.token) {
-        setToken(res.token)
-        router.push('/')
-      }
-    })
+    login(user)
+      .then((res) => {
+        if (res?.valid && res?.token) {
+          setToken(res.token)
+          router.push('/')
+        } else {
+          setLoginError('Invalid username or password.')
+        }
+      })
+      .catch(() => {
+        setLoginError('Invalid username or password.')
+      })
   }
 
   return (
     <div className="columns is-centered">
       <div className="column is-half">
-        <form className="box">
-          <h1 className="title">Welcome Back!</h1>
-          <Input
-            id="username"
-            refEl={username}
+        <Form className="box" onSubmit={submit}>
+          <Title>Welcome Back!</Title>
+          {loginError && <p className="notification is-danger is-light">{loginError}</p>}
+          <FormField
+            name="username"
+            inputRef={username}
             type="text"
             label="Username"
           />
-          <Input
-            id="password"
-            refEl={password}
+          <FormField
+            name="password"
+            inputRef={password}
             type="password"
             label="Password"
           />
           <div className="field is-grouped">
             <div className="control">
-              <button className="button is-link" onClick={submit}>Login</button>
+              <Button type="submit" color="link">Login</Button>
             </div>
             <div className="control">
-              <Link href="/register">
-                <button className="button is-link is-light">Register</button>
-              </Link>
+              <Button to="/register" color="link" variant="light">Register</Button>
             </div>
           </div>
-        </form>
+        </Form>
       </div>
     </div>
   )

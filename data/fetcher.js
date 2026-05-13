@@ -7,22 +7,29 @@ const checkError = (res) => {
   return res
 }
 
-const checkErrorJson = (res) => {
-  if (res.status !== 200) {
-    throw Error(res.status);
-  } else {
+const checkErrorJson = async (res) => {
+  if (res.status === 200 || res.status === 201) {
     return res.json()
   }
+  const err = new Error(String(res.status))
+  err.status = res.status
+  try {
+    err.body = await res.json()
+  } catch (_) {
+    err.body = null
+  }
+  throw err
 }
-
 
 const catchError = (err) => {
   if (err.message === '401') {
     window.location.href = "/login"
+    return
   }
   if (err.message === '404') {
     return null
   }
+  throw err
 }
 
 export const fetchWithResponse = (resource, options) => fetch(`${API_URL}/${resource}`, options)
