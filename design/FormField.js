@@ -1,8 +1,9 @@
 // type: "text" | "email" | "password" | "number" | "date" | "tel" | "url"
 // Pass inputRef from useRef() to read input value without re-renders (uncontrolled)
 // Pass children to render a custom control (Select, Textarea, etc.) instead of the default input
+// Pass error (string) to show a red helper message and highlight the input border
 
-export const FormField = ({ label, type = "text", placeholder = "", name, inputRef, defaultValue, children }) => {
+export const FormField = ({ label, type = "text", placeholder = "", name, inputRef, defaultValue, children, error }) => {
   return (
     <div className="field">
       <label className="label" htmlFor={name}>{label}</label>
@@ -11,7 +12,7 @@ export const FormField = ({ label, type = "text", placeholder = "", name, inputR
           <input
             id={name}
             name={name}
-            className="input"
+            className={`input${error ? ' is-danger' : ''}`}
             type={type}
             placeholder={placeholder}
             defaultValue={defaultValue}
@@ -19,6 +20,7 @@ export const FormField = ({ label, type = "text", placeholder = "", name, inputR
           />
         )}
       </div>
+      {error && <p className="help is-danger">{error}</p>}
     </div>
   )
 }

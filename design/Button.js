@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { useState } from "react"
 import { Modal } from "./Modal"
 
@@ -41,6 +42,7 @@ export const Button = ({
     loading = false,
     disabled = false,
     as: Component = "button",
+    to,
     className = "",
     type = "button",
     confirm = false,
@@ -70,7 +72,9 @@ export const Button = ({
         onClick?.()
     }
 
-    const buttonEl = Component === "button" ? (
+    const ResolvedComponent = to ? Link : Component
+
+    const buttonEl = ResolvedComponent === "button" ? (
         <button
             type={type}
             className={computedClassName}
@@ -81,9 +85,14 @@ export const Button = ({
             {children}
         </button>
     ) : (
-        <Component className={computedClassName} onClick={handleClick} {...rest}>
+        <ResolvedComponent
+            className={computedClassName}
+            onClick={handleClick}
+            {...(to ? { href: to } : {})}
+            {...rest}
+        >
             {children}
-        </Component>
+        </ResolvedComponent>
     )
 
     if (!confirm) return buttonEl

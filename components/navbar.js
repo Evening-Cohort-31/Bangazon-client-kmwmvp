@@ -1,9 +1,12 @@
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useEffect, useState, useRef } from 'react'
 import { useAppContext } from '../context/state'
+import { Button } from '../design'
 
 export default function Navbar() {
   const { token, profile } = useAppContext()
+  const router = useRouter()
   const hamburger = useRef()
   const navbar = useRef()
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -46,6 +49,7 @@ export default function Navbar() {
             () => {
               localStorage.removeItem('token')
               setIsLoggedIn(false)
+              router.push('/login')
             }}
           >
             Log out
@@ -59,12 +63,12 @@ export default function Navbar() {
     return (
       <div className="navbar-item">
         <div className="buttons">
-          <Link href="/register" className="button is-primary">
-              <strong>Sign up</strong>
-          </Link>
-          <Link href="/login" className="button is-light">
-              Log in
-          </Link>
+          <Button to="/register" className="button is-primary">
+            <strong>Sign up</strong>
+          </Button>
+          <Button to="/login" className="button is-light">
+            Log in
+          </Button>
         </div>
       </div>
     )
@@ -75,9 +79,9 @@ export default function Navbar() {
     <nav className="navbar mb-3 is-warning px-5 is-fixed-top is-top" role="navigation" aria-label="main navigation">
       <div className="navbar-brand">
 
-          <Link href="/">
-            <img src="/images/logo.png" alt="Logo" style={{ width:"4rem", height: "4rem"}} className="relative" />
-          </Link>
+        <Link href="/">
+          <img src="/images/logo.png" alt="Logo" style={{ width: "4rem", height: "4rem" }} className="relative" />
+        </Link>
 
 
         <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" ref={hamburger} onClick={showMobileNavbar}>
