@@ -56,6 +56,7 @@
 * PRs are merged into `dev` branch, not `main`
 * PR title includes ticket #
 * Use PR template for description and testing steps
+* Post PR link in Slack for team visibility
 * PR explains:
   * What feature was added/changed
   * Why it was added/changed
