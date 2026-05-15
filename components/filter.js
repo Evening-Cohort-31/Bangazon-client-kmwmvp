@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { getCategories } from '../data/products'
-import { Input, Select } from './form-elements'
+import { Button, FormField, FormSelect } from '../design'
 
 export default function Filter({ productCount, onSearch, locations }) {
   const refEls = {
@@ -15,43 +15,31 @@ export default function Filter({ productCount, onSearch, locations }) {
 
   const [showFilters, setShowFilters] = useState(false)
   const [query, setQuery] = useState('')
-  const [categories, setCategories] = useState([{id: 1, name: 'Apples'}, {id: 2, name: 'Oranges'}, {id: 3, name: 'Lemons'}])
+  const [categories, setCategories] = useState([])
   const [direction, setDirection] = useState('asc')
+
   const clear = () => {
     for (let ref in refEls) {
       if (ref === 'direction') {
         refEls[ref].current.checked = false
         setDirection('asc')
-      } else if (["min_price", "name"].includes(ref)) {
+      } else if (["min_price", "name", "category"].includes(ref)) {
         refEls[ref].current.value = ""
-      }
-      else {
+      } else {
         refEls[ref].current.value = 0
       }
     }
     onSearch('')
   }
+
   const orderByOptions = [
-    {
-      id: 'price',
-      name: 'Price'
-    },
-    {
-      id: 'name',
-      name: 'Name'
-    }
+    { id: 'price', name: 'Price' },
+    { id: 'name', name: 'Name' },
   ]
 
-  const directionOptions = [
-    {
-      name: 'direction',
-      label: 'asc'
-    },
-    {
-      name: 'direction',
-      label: 'desc'
-    },
-  ]
+  useEffect(() => {
+    getCategories().then(setCategories)
+  }, [])
 
   useEffect(() => {
     if (query) {
@@ -83,83 +71,95 @@ export default function Filter({ productCount, onSearch, locations }) {
           </p>
         </div>
         <div className="level-item">
-          <Input
-            placeholder="Find a Product"
-            id="name"
-            refEl={refEls.name}
-            addlClass="has-addons"
-            extra={
-              <p className="control">
-                <button className="button is-primary" onClick={filter}>
-                  Search
-                </button>
-              </p>
-            }
-          />
+          <div className="field has-addons">
+            <div className="control">
+              <input
+                id="name"
+                ref={refEls.name}
+                className="input"
+                type="text"
+                placeholder="Find a Product"
+              />
+            </div>
+            <div className="control">
+              <Button color="primary" onClick={filter}>Search</Button>
+            </div>
+          </div>
         </div>
       </div>
       <div className="level-right">
         <div className="level-item">
           <div className={`dropdown is-right ${showFilters ? 'is-active' : ''}`}>
             <div className="dropdown-trigger">
-              <button
-                className="button"
+              <Button
                 aria-haspopup="true"
                 aria-controls="dropdown-menu"
                 onClick={() => setShowFilters(!showFilters)}
               >
                 <span>Filter Products</span>
                 <span className="icon is-small">
-                <i className="fas fa-filter"></i>
+                  <i className="fas fa-filter"></i>
                 </span>
-              </button>
+              </Button>
             </div>
             <div className="dropdown-menu" id="dropdown-menu" role="menu">
               <div className="dropdown-content">
                 <div className="dropdown-item">
-                  <Select
-                    refEl={refEls.location}
-                    options={locations}
-                    title="Filter by Location"
-                    addlClass="is-fullwidth"
-                  />
+                  <FormSelect label="Location" name="location" inputRef={refEls.location}>
+                    <option value="0">All Locations</option>
+                    {locations.map(loc => (
+                      <option key={loc.id} value={loc.id}>{loc.name}</option>
+                    ))}
+                  </FormSelect>
                 </div>
-                <hr className="dropdown-divider"></hr>
+                <hr className="dropdown-divider" />
                 <div className="dropdown-item">
-                  <Select
-                    refEl={refEls.category}
-                    options={categories}
-                    title="Filter by Category"
-                    addlClass="is-fullwidth"
-                  />
+                  <FormSelect label="Category" name="category" inputRef={refEls.category}>
+                    <option value="">All Categories</option>
+                    {categories
+                      .filter(c => c.parent_category === null)
+                      .map(parent => {
+                        const children = categories.filter(c => c.parent_category === parent.id)
+                        return (
+                          <optgroup key={parent.id} label={parent.name}>
+                            <option value={parent.id}>All {parent.name}</option>
+                            {children.map(child => (
+                              <option key={child.id} value={child.id}>{child.name}</option>
+                            ))}
+                          </optgroup>
+                        )
+                      })
+                    }
+                  </FormSelect>
                 </div>
-                <hr className="dropdown-divider"></hr>
+                <hr className="dropdown-divider" />
                 <div className="dropdown-item">
-                  <Input
+                  <FormField
                     type="number"
-                    placeholder="Minimum Price"
-                    addlClass="is-horizontal"
-                    refEl={refEls.min_price}
+                    label="Minimum Price"
+                    placeholder="0.00"
+                    name="min_price"
+                    inputRef={refEls.min_price}
                   />
-
                 </div>
-                <hr className="dropdown-divider"></hr>
+                <hr className="dropdown-divider" />
                 <div className="dropdown-item">
-                  <Input
+                  <FormField
                     type="number"
-                    placeholder="Number Sold"
-                    addlClass="is-horizontal"
-                    refEl={refEls.number_sold}
+                    label="Number Sold"
+                    placeholder="0"
+                    name="number_sold"
+                    inputRef={refEls.number_sold}
                   />
                 </div>
-                <hr className="dropdown-divider"></hr>
+                <hr className="dropdown-divider" />
                 <div className="dropdown-item">
-                  <Select
-                    refEl={refEls.order_by}
-                    options={orderByOptions}
-                    title="Order by"
-                    addlClass="is-fullwidth"
-                  />
+                  <FormSelect label="Order by" name="order_by" inputRef={refEls.order_by}>
+                    <option value="0">No sorting</option>
+                    {orderByOptions.map(opt => (
+                      <option key={opt.id} value={opt.id}>{opt.name}</option>
+                    ))}
+                  </FormSelect>
                   <div className="field">
                     <div className="control">
                       <label className="checkbox">
@@ -180,18 +180,14 @@ export default function Filter({ productCount, onSearch, locations }) {
                     </div>
                   </div>
                 </div>
-                <hr className="dropdown-divider"></hr>
+                <hr className="dropdown-divider" />
                 <div className="dropdown-item">
                   <div className="field is-grouped">
                     <p className="control">
-                      <button className="button is-primary" onClick={filter}>
-                        Filter
-                      </button>
+                      <Button color="primary" onClick={filter}>Filter</Button>
                     </p>
                     <p className="control">
-                      <button className="button is-danger" onClick={clear}>
-                        Clear
-                      </button>
+                      <Button color="danger" onClick={clear}>Clear</Button>
                     </p>
                   </div>
                 </div>
