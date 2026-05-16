@@ -38,7 +38,7 @@ export default function Filter({ productCount, onSearch, locations }) {
   ]
 
   useEffect(() => {
-    getCategories().then(setCategories)
+    getCategories('structured=true&order_by=name').then(setCategories)
   }, [])
 
   useEffect(() => {
@@ -116,20 +116,13 @@ export default function Filter({ productCount, onSearch, locations }) {
                 <div className="dropdown-item">
                   <FormSelect label="Category" name="category" inputRef={refEls.category}>
                     <option value="">All Categories</option>
-                    {categories
-                      .filter(c => c.parent_category === null)
-                      .map(parent => {
-                        const children = categories.filter(c => c.parent_category === parent.id)
-                        return (
-                          <optgroup key={parent.id} label={parent.name}>
-                            <option value={parent.id}>All {parent.name}</option>
-                            {children.map(child => (
-                              <option key={child.id} value={child.id}>{child.name}</option>
-                            ))}
-                          </optgroup>
-                        )
-                      })
-                    }
+                    {categories.map(parent => (
+                      <optgroup key={parent.id} label={parent.name}>
+                        {parent.children.map(child => (
+                          <option key={child.id} value={child.id}>{child.name}</option>
+                        ))}
+                      </optgroup>
+                    ))}
                   </FormSelect>
                 </div>
                 <hr className="dropdown-divider" />
