@@ -14,8 +14,14 @@ export function getProducts(query = undefined) {
   })
 }
 
-export function getCategories() {
-  return fetchWithResponse('productcategories', {
+export function getCategories(query = undefined) {
+  let url = 'productcategories'
+
+  if (query) {
+    url += `?${query}`
+  }
+
+  return fetchWithResponse(url, {
     headers: {
       Authorization: `Token ${localStorage.getItem('token')}`
     }
