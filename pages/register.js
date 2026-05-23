@@ -213,21 +213,21 @@ export default function Register() {
             inputRef={phone_number}
             error={errors.phone_number}
           />
-          <div className="field is-grouped">
+          <div className="control">
+            <PasswordStrengthValidator passwordRef={password} />
+          </div>
+          <div className="field is-grouped is-grouped-centered mt-4">
             <div className="control">
-              <PasswordStrengthValidator passwordRef={password} />
-            </div>
-            <div className="control">
-              <Button type="submit" color="link" variant="primary">
+              <button type="submit" className="button is-primary">
                 Create Account
-              </Button>
+              </button>
             </div>
             <div className="control">
-              <Button color="link" to="/products" variant="light">
+              <Button color="link" to="/products" class="button is-light">
                 Cancel
               </Button>
             </div>
-          </div>
+          </div>{" "}
         </form>
       </div>
     </div>
