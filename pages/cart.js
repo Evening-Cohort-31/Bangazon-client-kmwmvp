@@ -7,7 +7,7 @@ import CartDetail from "../components/order/detail";
 import CompleteFormModal from "../components/order/form-modal";
 import { completeCurrentOrder, getCart } from "../data/orders";
 import { getPaymentTypes } from "../data/payment-types";
-import { deleteCart, removeProductFromOrder } from "../data/products";
+import { deleteCart, removeProductFromCart } from "../data/products";
 
 export default function Cart() {
   const [cart, setCart] = useState({});
@@ -33,14 +33,12 @@ export default function Cart() {
   }, []);
 
   const completeOrder = (paymentTypeId) => {
-    console.log("order id:", cart.id);
-    console.log("payment type id:", parseInt(paymentTypeId));
-    completeCurrentOrder(cart.id, parseInt(paymentTypeId)).then(() =>
+    completeCurrentOrder(parseInt(paymentTypeId)).then(() =>
       router.push("/my-orders"),
     );
   };
 
-  const deleteOrder = () => {
+  const emptyCart = () => {
     if (
       window.confirm(
         "Are you sure you want to delete all the items in your cart?",
@@ -52,8 +50,8 @@ export default function Cart() {
     }
   };
 
-  const removeProduct = (productId) => {
-    removeProductFromOrder(productId).then(refresh);
+  const removeProduct = (lineItemId) => {
+    removeProductFromCart(lineItemId).then(refresh);
   };
 
   return (
@@ -64,7 +62,7 @@ export default function Cart() {
         paymentTypes={paymentTypes}
         completeOrder={completeOrder}
       />
-      <CardLayout title="Your Current Order">
+      <CardLayout title="Your Cart">
         <CartDetail cart={cart} removeProduct={removeProduct} />
         <>
           <a
@@ -73,7 +71,7 @@ export default function Cart() {
           >
             Complete Purchase
           </a>
-          <a className="card-footer-item" onClick={deleteOrder}>
+          <a className="card-footer-item" onClick={emptyCart}>
             Delete Cart
           </a>
         </>

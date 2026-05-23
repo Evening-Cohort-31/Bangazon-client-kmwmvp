@@ -36,7 +36,7 @@ export function getProductById(id) {
   })
 }
 
-export function addProductToOrder(id) {
+export function addProductToCart(id) {
   return fetchWithoutResponse(`cart`, {
     method: 'POST',
     headers: {
@@ -48,7 +48,7 @@ export function addProductToOrder(id) {
 }
 
 
-export function removeProductFromOrder(id) {
+export function removeProductFromCart(id) {
   return fetchWithoutResponse(`cart/${id}`, {
     method: 'DELETE',
     headers: {

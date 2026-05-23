@@ -1,5 +1,5 @@
-<!-- Last updated: 2026-05-04 -->
-<!-- Last change: Initial architecture document (reverse-engineered from existing codebase) -->
+<!-- Last updated: 2026-05-23 -->
+<!-- Last change: Updated data model for Cart/Order separation (ticket #60) -->
 
 # Bangazon Client - Technical Architecture
 
@@ -128,6 +128,7 @@ Full schema is in [dev-docs/erd.dbml](erd.dbml). The diagram below shows key rel
 erDiagram
     Users ||--|| Customers : "has profile"
     Customers ||--o{ Stores : "owns"
+    Customers ||--|| Carts : "has cart"
     Customers ||--o{ Orders : "places"
     Customers ||--o{ PaymentTypes : "has"
     Customers ||--o{ CustomerFavorites : "favorites"
@@ -135,9 +136,11 @@ erDiagram
     Customers ||--o{ ProductRatings : "rates"
     Stores ||--o{ Products : "lists"
     Products }o--|| Categories : "belongs to"
+    Carts ||--o{ CartProducts : "contains"
+    Products ||--o{ CartProducts : "in cart"
     Orders ||--o{ OrderProducts : "contains"
     Products ||--o{ OrderProducts : "in"
-    Orders }o--o| PaymentTypes : "paid with"
+    Orders }o--|| PaymentTypes : "paid with"
     Products ||--o{ ProductRecommendations : "recommended via"
     Products ||--o{ ProductRatings : "rated via"
     Products ||--o{ ProductLikes : "liked via"
@@ -172,9 +175,9 @@ erDiagram
 | POST | `/products/:id/like` | `data/products.js` |
 | DELETE | `/products/:id/unlike` | `data/products.js` (see note below) |
 | GET | `/categories` | `data/products.js` |
-| GET | `/cårt` | `data/orders.js` (see Unanswered Questions) |
+| GET | `/cart` | `data/orders.js` |
 | GET | `/orders` | `data/orders.js` |
-| PUT | `/orders/:id/complete` | `data/orders.js` |
+| PUT | `/orders/:id` | `data/orders.js` |
 | GET | `/stores` | `data/stores.js` |
 | GET | `/stores/:id` | `data/stores.js` |
 | POST | `/stores` | `data/stores.js` |
@@ -186,7 +189,7 @@ erDiagram
 | DELETE | `/payment-types/:id` | `data/payment-types.js` |
 
 **Known API URL mismatches (tickets to address):**
-- `removeProductFromOrder` calls `/products/:id/remove-from-order`; ticket #29 expects the endpoint to be `/lineitems/:id`
+- `removeProductFromCart` calls `/products/:id/remove-from-order`; ticket #29 expects the endpoint to be `/lineitems/:id`
 - `unLikeProduct` calls `/products/:id/unlike` with DELETE; ticket #20 specifies `/products/:id/like` with DELETE
 
 ## Infrastructure and Deployment
@@ -224,5 +227,4 @@ Defined in `PROJECT_WORKFLOW.md`. Branch naming: `initials/short-description-tic
 
 ## Unanswered Questions
 
-- **`data/orders.js` line 4 has a typo:** The cart endpoint is fetched as `'cårt'` (with a special character `å`) instead of `'cart'`. This is almost certainly why the cart view does not load. Needs to be confirmed against the backend and fixed.
 - **`data/settings.js` is unused:** It exports `apiHost: process.env.REACT_APP_API_URI`, but `fetcher.js` ignores it and hardcodes `http://localhost:8000`. It's unclear if this was meant to be wired up but never was, or if it's leftover from an earlier version. Next.js also requires the `NEXT_PUBLIC_` prefix for client-side env vars, not `REACT_APP_`, so it wouldn't work as-is even if fetcher.js imported it.
