@@ -54,30 +54,13 @@ Table ProductCategories {
   Note: 'Join table allowing one product to belong to multiple categories and one category to contain multiple products.'
 }
 
-Table Carts {
-  id integer [pk]
-  customer_id integer [not null, unique]
-
-  Note: 'One cart per customer. Created at registration and persists permanently. Holds items under consideration before checkout.'
-}
-
-Table CartProducts {
-  id integer [pk]
-  cart_id integer [not null]
-  product_id integer [not null]
-  quantity integer [not null, default: 1]
-
-  Note: 'Line items in a customer cart. Deleted when the customer checks out or clears their cart. Referenced as lineitems in the cart API response.'
-}
-
 Table Orders {
   id integer [pk]
   customer_id integer [not null]
-  payment_type_id integer [not null]
+  payment_type_id integer
   created_at datetime
   completed_at datetime
-
-  Note: 'Represents a completed purchase. An Order is only created at checkout when a payment type is provided. is_open has been removed: cart state is now managed by the Carts table.'
+  is_open boolean [not null, default: true]
 }
 
 Table OrderProducts {
@@ -86,7 +69,7 @@ Table OrderProducts {
   product_id integer [not null]
   quantity integer [not null, default: 1]
 
-  Note: 'Line items on a completed order. Created at checkout by converting CartProducts. Referenced as lineitems in the orders API response.'
+  Note: 'Referenced as "lineitems" in the API (e.g. /lineitems/n). This table name may be updated as the project evolves to match the API terminology.'
 }
 
 Table PaymentTypes {
@@ -137,11 +120,6 @@ Ref: Products.seller_id > Customers.id
 
 Ref: ProductCategories.product_id > Products.id
 Ref: ProductCategories.category_id > Categories.id
-
-Ref: Carts.customer_id > Customers.id
-
-Ref: CartProducts.cart_id > Carts.id
-Ref: CartProducts.product_id > Products.id
 
 Ref: Orders.customer_id > Customers.id
 Ref: Orders.payment_type_id > PaymentTypes.id

@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useState, useRef } from "react";
-import { addProductToOrder, recommendProduct } from "../../data/products";
+import { addProductToCart, recommendProduct } from "../../data/products";
 import Modal from "../modal";
 import { Input } from "../form-elements";
 
@@ -11,7 +11,7 @@ export function Detail({ product, like, unlike }) {
   const [showError, setShowError] = useState(false);
 
   const addToCart = () => {
-    addProductToOrder(product.id).then(() => {
+    addProductToCart(product.id).then(() => {
       const goToCart = window.confirm(
         "Item added successfully! Want to go the cart?",
       );
