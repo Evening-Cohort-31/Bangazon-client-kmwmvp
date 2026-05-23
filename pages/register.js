@@ -223,7 +223,7 @@ export default function Register() {
               </button>
             </div>
             <div className="control">
-              <Button color="link" to="/products" class="button is-light">
+              <Button color="link" to="/products" className="button is-light">
                 Cancel
               </Button>
             </div>
