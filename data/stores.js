@@ -39,8 +39,9 @@ export function editStore(store) {
 }
 
 export function favoriteStore(storeId) {
-  return fetchWithoutResponse(`stores/${storeId}/favorite`, {
+  return fetchWithoutResponse(`profile/favoritestores`, {
     method: 'POST',
+    body: JSON.stringify({ store_id: storeId }),
     headers: {
       Authorization: `Token ${localStorage.getItem('token')}`,
       'Content-Type': 'application/json'
@@ -49,8 +50,9 @@ export function favoriteStore(storeId) {
 }
 
 export function unfavoriteStore(storeId) {
-  return fetchWithoutResponse(`stores/${storeId}/unfavorite`, {
+  return fetchWithoutResponse(`profile/favoritestores`, {
     method: 'DELETE',
+    body: JSON.stringify({ store_id: storeId }),
     headers: {
       Authorization: `Token ${localStorage.getItem('token')}`,
       'Content-Type': 'application/json'
