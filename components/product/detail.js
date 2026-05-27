@@ -1,12 +1,12 @@
 import { useRouter } from "next/router";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { addProductToCart, recommendProduct } from "../../data/products";
 import Modal from "../modal";
 import { Input } from "../form-elements";
 
 export function Detail({ product, like, unlike }) {
   const router = useRouter();
-  const usernameEl = useRef();
+  const [username, setUsername] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [showError, setShowError] = useState(false);
 
@@ -22,13 +22,13 @@ export function Detail({ product, like, unlike }) {
   };
 
   const recommendProductEvent = () => {
-    recommendProduct(product.id, usernameEl.current.value).then((res) => {
+    recommendProduct(product.id, username).then((res) => {
       if (res) {
         setShowError(true);
       } else {
         setShowModal(false);
         setShowError(false);
-        usernameEl.current.value = "";
+        setUsername("");
       }
     });
   };
@@ -40,7 +40,8 @@ export function Detail({ product, like, unlike }) {
         showModal={showModal}
         title="Recommend this product to a user"
       >
-        <Input id="username" label="Enter a username" refEl={usernameEl}>
+        <Input id="username" label="Enter a username" value={username} onChangeEvent={(event) => setUsername(
+          event.target.value)}>
           {showError ? (
             <p className="help is-danger">This user doesn't exist</p>
           ) : (
