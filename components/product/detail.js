@@ -22,14 +22,16 @@ export function Detail({ product, like, unlike }) {
   };
 
   const recommendProductEvent = () => {
+
     recommendProduct(product.id, username).then((res) => {
       if (res) {
-        setShowError(true);
-      } else {
         setShowModal(false);
         setShowError(false);
         setUsername("");
+      } else {
+        setShowError(true);
       }
+      
     });
   };
 
