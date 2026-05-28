@@ -115,7 +115,7 @@ export function recommendProduct(id, username) {
       Authorization: `Token ${localStorage.getItem('token')}`,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ username })
+    body: JSON.stringify({ recipient: username })
   })
 }
 
