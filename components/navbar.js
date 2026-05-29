@@ -5,17 +5,11 @@ import { useAppContext } from '../context/state'
 import { Button } from '../design'
 
 export default function Navbar() {
-  const { token, profile } = useAppContext()
+  const { token, profile, setToken } = useAppContext()
   const router = useRouter()
   const hamburger = useRef()
   const navbar = useRef()
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
-  useEffect(() => {
-    if (token) {
-      setIsLoggedIn(true)
-    }
-  }, [token])
 
   const showMobileNavbar = () => {
     hamburger.current.classList.toggle('is-active')
@@ -48,7 +42,7 @@ export default function Navbar() {
           <a className="navbar-item" onClick={
             () => {
               localStorage.removeItem('token')
-              setIsLoggedIn(false)
+              setToken(null)
               router.push('/login')
             }}
           >
@@ -98,7 +92,7 @@ export default function Navbar() {
         </div>
         <div className="navbar-end">
           {
-            isLoggedIn ? getLoggedInButtons() : getLoggedOutButtons()
+            token ? getLoggedInButtons() : getLoggedOutButtons()
           }
         </div>
       </div>
