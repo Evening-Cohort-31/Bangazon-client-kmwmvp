@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import CardLayout from '../components/card-layout'
 import Layout from '../components/layout'
 import Navbar from '../components/navbar'
@@ -6,9 +6,13 @@ import { ProductCard } from '../components/product/card'
 import { StoreCard } from '../components/store/card'
 import { useAppContext } from '../context/state'
 import { getUserProfile } from '../data/auth'
+import { getRecommendations, getRecommendedToMe } from '../data/recommendations'
 
 export default function Profile() {
   const { profile, setProfile } = useAppContext()
+
+  const [recommendations, setRecommendations] = useState([])
+  const [recommendedToMe, setRecommendedToMe] = useState([])
 
   useEffect(() => {
     getUserProfile().then((profileData) => {
@@ -17,6 +21,9 @@ export default function Profile() {
       }
     })
   }, [])
+
+  useEffect(()=> {getRecommendations().then ((data) =>setRecommendations(data))}, [])
+  useEffect(()=> {getRecommendedToMe().then ((data) => setRecommendedToMe(data))}, [])
 
   return (
     <>
@@ -33,8 +40,11 @@ export default function Profile() {
       <CardLayout title="Products you've recommended" width="is-full">
         <div className="columns is-multiline">
           {
-            profile.recommended_by?.map(recommendation => (
-              <ProductCard product={recommendation.product} key={recommendation.product.id} width="is-one-third" />
+            recommendations?.map(recommendation => (
+              <ProductCard product={recommendation.product} key={recommendation.id} 
+              
+              width="is-one-third" />
+
             ))
           }
         </div>
@@ -43,8 +53,8 @@ export default function Profile() {
       <CardLayout title="Products recommended to you" width="is-full">
         <div className="columns is-multiline">
           {
-            profile.recommendations?.map(recommendation => (
-              <ProductCard product={recommendation.product} key={recommendation.product.id} width="is-one-third" />
+            recommendedToMe?.map(recommendation => (
+              <ProductCard product={recommendation.product} key={recommendation.id} width="is-one-third" />
             ))
           }
         </div>
