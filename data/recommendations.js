@@ -9,7 +9,7 @@ export function getRecommendations() {
 }
 
 export function getRecommendedToMe() {
-  return fetchWithResponse(`recommendations/recommended_to`, {
+  return fetchWithResponse(`recommendations?recommended_to=true`, {
     headers: {
       Authorization: `Token ${localStorage.getItem('token')}`
     }
