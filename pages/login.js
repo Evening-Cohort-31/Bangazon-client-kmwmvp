@@ -26,6 +26,7 @@ export default function Login() {
     login(user)
       .then((res) => {
         if (res?.valid && res?.token) {
+          localStorage.setItem('token', res.token)
           setToken(res.token)
           router.push('/')
         } else {
