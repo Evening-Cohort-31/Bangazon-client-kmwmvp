@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useState, useRef, useEffect } from "react";
-import { addProductToCart, recommendProduct } from "../../data/products";
+import { addProductToCart } from "../../data/products";
+import { recommendProduct } from "../../data/recommendations";
 import Modal from "../modal";
 import { Input } from "../form-elements";
 

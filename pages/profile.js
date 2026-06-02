@@ -37,6 +37,8 @@ export default function Profile() {
         </div>
         <></>
       </CardLayout>
+
+      {/* TODO: Change CardLayout and ProductCard components and use Bulma design components for better styling */}
       <CardLayout title="Products you've recommended" width="is-full">
         <div className="columns is-multiline">
           {
