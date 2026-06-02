@@ -10,6 +10,7 @@ export function Detail({ product, like, unlike }) {
   const [username, setUsername] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState([]);
 
   const addToCart = () => {
     addProductToCart(product.id).then(() => {
@@ -23,17 +24,18 @@ export function Detail({ product, like, unlike }) {
   };
 
   const recommendProductEvent = () => {
-
-    recommendProduct(product.id, username).then((res) => {
-      if (res) {
-        setShowModal(false);
-        setShowError(false);
-        setUsername("");
-      } else {
+    recommendProduct(product.id, username)
+      .then((res) => {
+        if (res) {
+          setShowModal(false);
+          setShowError(false);
+          setUsername("");
+        }
+      })
+      .catch((error) => {
+        setErrorMessage(error.body)
         setShowError(true);
-      }
-      
-    });
+      });
   };
 
   return (
@@ -46,7 +48,7 @@ export function Detail({ product, like, unlike }) {
         <Input id="username" label="Enter a username" value={username} onChangeEvent={(event) => setUsername(
           event.target.value)}>
           {showError ? (
-            <p className="help is-danger">This user doesn't exist</p>
+            <p className="help is-danger">{errorMessage.message}</p>
           ) : (
             <></>
           )}
