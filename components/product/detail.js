@@ -1,14 +1,16 @@
 import { useRouter } from "next/router";
-import { useState, useRef } from "react";
-import { addProductToCart, recommendProduct } from "../../data/products";
+import { useState, useRef, useEffect } from "react";
+import { addProductToCart } from "../../data/products";
+import { recommendProduct } from "../../data/recommendations";
 import Modal from "../modal";
 import { Input } from "../form-elements";
 
 export function Detail({ product, like, unlike }) {
   const router = useRouter();
-  const usernameEl = useRef();
+  const [username, setUsername] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState([]);
 
   const addToCart = () => {
     addProductToCart(product.id).then(() => {
@@ -22,15 +24,18 @@ export function Detail({ product, like, unlike }) {
   };
 
   const recommendProductEvent = () => {
-    recommendProduct(product.id, usernameEl.current.value).then((res) => {
-      if (res) {
+    recommendProduct(product.id, username)
+      .then((res) => {
+        if (res) {
+          setShowModal(false);
+          setShowError(false);
+          setUsername("");
+        }
+      })
+      .catch((error) => {
+        setErrorMessage(error.body)
         setShowError(true);
-      } else {
-        setShowModal(false);
-        setShowError(false);
-        usernameEl.current.value = "";
-      }
-    });
+      });
   };
 
   return (
@@ -40,9 +45,10 @@ export function Detail({ product, like, unlike }) {
         showModal={showModal}
         title="Recommend this product to a user"
       >
-        <Input id="username" label="Enter a username" refEl={usernameEl}>
+        <Input id="username" label="Enter a username" value={username} onChangeEvent={(event) => setUsername(
+          event.target.value)}>
           {showError ? (
-            <p className="help is-danger">This user doesn't exist</p>
+            <p className="help is-danger">{errorMessage.message}</p>
           ) : (
             <></>
           )}

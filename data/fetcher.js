@@ -30,6 +30,7 @@ const checkErrorJson = async (res) => {
   } catch (_) {
     err.body = null
   }
+  
   throw err
 }
 
@@ -40,9 +41,7 @@ const catchError = (err) => {
     }
     return
   }
-  if (err.message === '404') {
-    return null
-  }
+
   throw err
 }
 

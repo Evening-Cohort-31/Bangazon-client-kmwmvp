@@ -108,17 +108,6 @@ export function editProduct(id, product) {
   })
 }
 
-export function recommendProduct(id, username) {
-  return fetchWithResponse(`products/${id}/recommend`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Token ${localStorage.getItem('token')}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ username })
-  })
-}
-
 export function likeProduct(productId) {
   return fetchWithoutResponse(`products/${productId}/like`, {
     method: 'POST',
