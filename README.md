@@ -12,6 +12,7 @@ Bangazon is a full-stack e-commerce platform where users can browse products, ma
 ![Bulma](https://img.shields.io/badge/Bulma-00D1B2?style=for-the-badge&logo=bulma&logoColor=white)
 ![Font Awesome](https://img.shields.io/badge/Font_Awesome-528DD7?style=for-the-badge&logo=fontawesome&logoColor=white)
 ![ESLint](https://img.shields.io/badge/ESLint-4B3263?style=for-the-badge&logo=eslint&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
 
 ---
 
@@ -32,6 +33,7 @@ Project docs live in [`dev-docs/`](dev-docs/):
 | [PRD.md](dev-docs/PRD.md) | Project requirements, scope, and learning goals |
 | [ARCHITECTURE.md](dev-docs/ARCHITECTURE.md) | System overview, codebase map, API endpoints, and key technical decisions |
 | [erd.dbml](dev-docs/erd.dbml) | Full database schema in DBML format |
+| [TypeScript_Learning_Spike.md](dev-docs/TypeScript_Learning_Spike.md) | TypeScript setup guide and component conversion examples |
 
 ---
 
@@ -94,6 +96,6 @@ Project docs live in [`dev-docs/`](dev-docs/):
 
 ## Examples
 
-![](./demo_resrcs/site_demo.gif)
-![](./demo_resrcs/product_detail.png)
-![](./demo_resrcs/store_detail.png)
+![Site demo](./demo_resrcs/site_demo.gif)
+![Product detail page](./demo_resrcs/product_detail.png)
+![Store detail page](./demo_resrcs/store_detail.png)
