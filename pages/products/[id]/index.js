@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { Layout, Navbar } from '../../../components'
+import { Layout, Navbar, Loading } from '../../../components'
 import { Detail } from '../../../components/product/detail'
 import { Ratings } from '../../../components/rating/detail'
 import { getProductById, likeProduct, unLikeProduct } from '../../../data/products'
@@ -8,7 +8,7 @@ import { getProductById, likeProduct, unLikeProduct } from '../../../data/produc
 export default function ProductDetail() {
   const router = useRouter()
   const { id } = router.query
-  const [product, setProduct] = useState({})
+  const [product, setProduct] = useState(null)
 
   const refresh = () => {
     getProductById(id).then(productData => {
@@ -35,14 +35,20 @@ export default function ProductDetail() {
   return (
     <div className="columns is-centered">
       <div className="column">
-        <Detail product={product} like={like} unlike={unlike} />
-        <Ratings
-          refresh={refresh}
-          number_purchased={product.number_purchased}
-          ratings={product.ratings}
-          average_rating={product.average_rating}
-          likes={product.likes}
-        />
+        {!product ? (
+          <Loading />
+        ) : (
+          <>
+            <Detail product={product} like={like} unlike={unlike} />
+            <Ratings
+              refresh={refresh}
+              number_purchased={product.number_purchased}
+              ratings={product.ratings}
+              average_rating={product.average_rating}
+              likes={product.likes}
+            />
+          </>
+        )}
       </div>
     </div>
   )
