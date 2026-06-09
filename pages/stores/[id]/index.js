@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import Layout from '../../../components/layout'
-import Navbar from '../../../components/navbar'
+import { Layout, Navbar } from '../../../components'
 import { ProductCard } from '../../../components/product/card'
 import Detail from '../../../components/store/detail'
 import { useAppContext } from '../../../context/state'

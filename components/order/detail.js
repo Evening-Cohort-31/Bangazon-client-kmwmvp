@@ -1,4 +1,4 @@
-import Table from "../table"
+import { Table } from "../"
 
 export default function CartDetail({ cart, removeProduct }) {
   const headers = ['Product', 'Price', '']

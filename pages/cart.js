@@ -1,8 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import CardLayout from "../components/card-layout";
-import Layout from "../components/layout";
-import Navbar from "../components/navbar";
+import { CardLayout, Navbar, Layout } from "../components";
 import CartDetail from "../components/order/detail";
 import CompleteFormModal from "../components/order/form-modal";
 import { completeCurrentOrder, getCart } from "../data/orders";
@@ -57,10 +55,10 @@ export default function Cart() {
   return (
     <>
       <CompleteFormModal
-        showModal={showCompleteForm}
-        setShowModal={setShowCompleteForm}
+        isOpen={showCompleteForm}
+        onClose={() => setShowCompleteForm(false)}
         paymentTypes={paymentTypes}
-        completeOrder={completeOrder}
+        onConfirm={completeOrder}
       />
       <CardLayout title="Your Cart">
         <CartDetail cart={cart} removeProduct={removeProduct} />

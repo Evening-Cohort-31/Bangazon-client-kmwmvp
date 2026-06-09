@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useState, useRef, useEffect } from "react";
 import { addProductToCart } from "../../data/products";
 import { recommendProduct } from "../../data/recommendations";
-import Modal from "../modal";
+import { Modal } from "../";
 import { Input } from "../form-elements";
 
 export function Detail({ product, like, unlike }) {

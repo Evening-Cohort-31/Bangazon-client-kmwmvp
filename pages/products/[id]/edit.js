@@ -1,12 +1,11 @@
 import { useRouter } from 'next/router'
 import { useRef, useEffect, useState } from 'react'
-import Layout from '../../../components/layout'
-import Navbar from '../../../components/navbar'
+import { Layout, Navbar } from '../../../components'
 import { editProduct, getProductById } from '../../../data/products'
 import ProductForm from '../../../components/product/form'
 import { useAppContext } from '../../../context/state'
 
-export default function NewProduct() {
+export default function EditProduct() {
   const formEl = useRef()
   const router = useRouter()
   const [product, setProduct] = useState()
@@ -60,13 +59,13 @@ export default function NewProduct() {
     <ProductForm
       formEl={formEl}
       saveEvent={saveProduct}
-      title="Add a new product"
+      title="Edit product"
       router={router}
     ></ProductForm>
   )
 }
 
-NewProduct.getLayout = function getLayout(page) {
+EditProduct.getLayout = function getLayout(page) {
   return (
     <Layout>
       <Navbar />

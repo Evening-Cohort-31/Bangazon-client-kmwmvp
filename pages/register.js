@@ -1,12 +1,10 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useRef, useState, useMemo } from "react";
-import Layout from "../components/layout";
-import Navbar from "../components/navbar";
+import { Layout, Navbar, Button, Title, FormField } from "../components";
 import { useAppContext } from "../context/state";
 import { register } from "../data/auth";
 import { validateEmail, validatePhoneNumber } from "../data/validators";
-import { Button, FormField, Title } from "../design";
 
 const PasswordStrengthValidator = ({ passwordRef }) => {
   const [password, setPassword] = useState("");

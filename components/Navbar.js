@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState, useRef } from 'react'
 import { useAppContext } from '../context/state'
-import { Button } from '../design'
+import { Button } from '../components/design-system'
 
 export default function Navbar() {
   const { token, profile, setToken } = useAppContext()

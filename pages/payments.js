@@ -1,10 +1,6 @@
-import Link from 'next/link'
 import { useState, useEffect } from 'react'
-import CardLayout from '../components/card-layout'
-import Layout from '../components/layout'
-import Navbar from '../components/navbar'
+import { CardLayout, Navbar, Layout, Table } from '../components'
 import AddPaymentModal from '../components/payments/payment-modal'
-import Table from '../components/table'
 import { addPaymentType, getPaymentTypes, deletePaymentType } from '../data/payment-types'
 
 export default function Payments() {
@@ -36,7 +32,11 @@ export default function Payments() {
 
   return (
     <>
-      <AddPaymentModal showModal={showModal} setShowModal={setShowModal} addNewPayment={addNewPayment} />
+      <AddPaymentModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onConfirm={addNewPayment}
+      />
       <CardLayout title="Your Payment Methods">
         <Table headers={headers}>
           {

@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react'
-import Filter from '../../components/filter'
-import Layout from '../../components/layout'
-import Navbar from '../../components/navbar'
+import { Filter, Layout, Navbar } from '../../components'
 import { ProductCard } from '../../components/product/card'
 import { getProducts } from '../../data/products'
 
@@ -26,9 +24,9 @@ export default function Products() {
         setLocations(locationObjects)
       }
     })
-    .catch(err => {
-      setLoadingMessage(`Unable to retrieve products. Status code ${err.message} on response.`)
-    })
+      .catch(err => {
+        setLoadingMessage(`Unable to retrieve products. Status code ${err.message} on response.`)
+      })
   }, [])
 
   const searchProducts = (event) => {
