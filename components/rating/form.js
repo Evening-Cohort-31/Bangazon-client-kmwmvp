@@ -5,11 +5,11 @@ export default function RatingForm({ saveRating }) {
   const [rating, setRating] = useState(0)
   const [comment, setComment] = useState("")
   
+
+  // Removed the review 
   const submitRating = () => {
-    const outOf5 = rating/20
     saveRating({
-      score: outOf5,
-      review: comment
+      rating: rating
     })
   }
 
