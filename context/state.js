@@ -15,17 +15,34 @@ export function AppWrapper({ children }) {
 
   useEffect(() => {
     const authRoutes = ['/login', '/register']
-    if (token) {
-      localStorage.setItem('token', token)
-      if (!authRoutes.includes(router.pathname)) {
-        getUserProfile().then((profileData) => {
-          if (profileData) {
-            setProfile(profileData)
-          }
-        })
-      }
+
+    // Track whether this effect has been cleaned up so an outdated profile request
+    // cannot update state after navigation, logout, or a newer request.
+    let ignore = false
+
+    // Clear any previous user's profile when there is no active token.
+    if (!token) {
+      setProfile({})
+      return
     }
-  }, [token])
+
+    localStorage.setItem('token', token)
+
+    if (!authRoutes.includes(router.pathname)) {
+      getUserProfile().then((profileData) => {
+        // Only apply the response while it still belongs to the current effect.
+        if (!ignore && profileData) {
+          setProfile(profileData)
+        }
+      })
+    }
+
+    // Invalidate this request when the component unmounts or the dependencies change.
+    return () => {
+      ignore = true
+    }
+    // Refresh the profile when authentication changes or navigation leaves an auth page.
+  }, [token, router.pathname])
 
   return (
     <AppContext.Provider value={{ profile, token, setToken, setProfile }}>

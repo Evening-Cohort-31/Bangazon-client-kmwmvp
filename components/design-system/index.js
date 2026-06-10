@@ -12,3 +12,5 @@ export { Title, Subtitle, Text, MutedText, SmallText, Content, Label, Span } fro
 export { IconButton } from "./IconButton"
 export { Form, FormActions } from "./Form"
 export { Tag } from "./Tag"
+export { default as Table } from "./Table"
+export { default as CardLayout } from "./CardLayout"

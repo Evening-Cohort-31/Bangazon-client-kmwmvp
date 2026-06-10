@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router'
 import { useRef } from 'react'
-import Layout from '../../components/layout'
-import Navbar from '../../components/navbar'
+import { Layout, Navbar } from '../../components'
 import { addProduct } from '../../data/products'
 import ProductForm from '../../components/product/form'
 export default function NewProduct() {
@@ -9,7 +8,7 @@ export default function NewProduct() {
   const router = useRouter()
 
   const saveProduct = () => {
-    const { name, description, price, category, location, quantity  } = formEl.current
+    const { name, description, price, category, location, quantity } = formEl.current
     const product = {
       name: name.value,
       description: description.value,

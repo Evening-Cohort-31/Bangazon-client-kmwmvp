@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import Layout from '../../../components/layout'
-import Navbar from '../../../components/navbar'
+import { Layout, Navbar, Loading } from '../../../components'
 import { Detail } from '../../../components/product/detail'
 import { Ratings } from '../../../components/rating/detail'
 import { getProductById, likeProduct, unLikeProduct } from '../../../data/products'
@@ -9,7 +8,7 @@ import { getProductById, likeProduct, unLikeProduct } from '../../../data/produc
 export default function ProductDetail() {
   const router = useRouter()
   const { id } = router.query
-  const [product, setProduct] = useState({})
+  const [product, setProduct] = useState(null)
 
   const refresh = () => {
     getProductById(id).then(productData => {
@@ -28,22 +27,42 @@ export default function ProductDetail() {
   }
 
   useEffect(() => {
-    if (id) {
-      refresh()
+    // Wait until the dynamic route has a product ID before making the request.
+    if (!router.isReady || !id) return
+
+    // Prevent an outdated request from updating the page after navigation.
+    let ignore = false
+    setProduct(null)
+
+    getProductById(id).then(productData => {
+      if (!ignore && productData) {
+        setProduct(productData)
+      }
+    })
+
+    // Invalidate this request when the component unmounts or the product ID changes.
+    return () => {
+      ignore = true
     }
-  }, [id])
+  }, [router.isReady, id])
 
   return (
     <div className="columns is-centered">
       <div className="column">
-        <Detail product={product} like={like} unlike={unlike}/>
-        <Ratings
-          refresh={refresh}
-          number_purchased={product.number_purchased}
-          ratings={product.ratings}
-          average_rating={product.average_rating}
-          likes={product.likes}
-        />
+        {!product ? (
+          <Loading />
+        ) : (
+          <>
+            <Detail product={product} like={like} unlike={unlike} />
+            <Ratings
+              refresh={refresh}
+              number_purchased={product.number_purchased}
+              ratings={product.ratings}
+              average_rating={product.average_rating}
+              likes={product.likes}
+            />
+          </>
+        )}
       </div>
     </div>
   )

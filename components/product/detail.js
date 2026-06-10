@@ -1,8 +1,9 @@
 import { useRouter } from "next/router";
-import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
+import { useState } from "react";
 import { addProductToCart } from "../../data/products";
 import { recommendProduct } from "../../data/recommendations";
-import Modal from "../modal";
+import { Modal } from "../";
 import { Input } from "../form-elements";
 
 export function Detail({ product, like, unlike }) {
@@ -41,9 +42,17 @@ export function Detail({ product, like, unlike }) {
   return (
     <>
       <Modal
-        setShowModal={setShowModal}
-        showModal={showModal}
+        onConfirm={recommendProductEvent}
+        isOpen={showModal}
         title="Recommend this product to a user"
+        onClose={onClose => {
+          setShowModal(false);
+          setShowError(false);
+          setUsername("");
+        }}
+        confirmColor="success"
+        confirmText="Recommend Product"
+        cancelText="Cancel"
       >
         <Input id="username" label="Enter a username" value={username} onChangeEvent={(event) => setUsername(
           event.target.value)}>
@@ -53,21 +62,18 @@ export function Detail({ product, like, unlike }) {
             <></>
           )}
         </Input>
-        <>
-          <button className="button is-success" onClick={recommendProductEvent}>
-            Recommend Product
-          </button>
-          <button className="button" onClick={() => setShowModal(false)}>
-            Cancel
-          </button>
-        </>
       </Modal>
       <div className="tile is-ancestor">
         <div className="tile is-parent">
           <article className="tile is-child">
-            <figure className="image is-4by3">
-              <img src="https://bulma.io/images/placeholders/640x480.png"></img>
-            </figure>
+            {product.image_path && (
+              <Image
+                src={product.image_path}
+                alt={product.name}
+                width={800}
+                height={600}
+              />
+            )}
           </article>
         </div>
         <div className="tile is-parent is-vertical ">

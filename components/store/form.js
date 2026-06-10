@@ -1,5 +1,5 @@
 import { Input } from '../../components/form-elements'
-import CardLayout from '../card-layout'
+import { CardLayout } from '../'
 
 export default function StoreForm({ nameEl, descriptionEl, saveEvent, title, router, children }) {
   return (

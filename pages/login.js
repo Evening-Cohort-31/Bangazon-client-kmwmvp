@@ -1,10 +1,8 @@
 import { useRouter } from 'next/router'
 import { useRef, useState } from 'react'
-import Layout from '../components/layout'
-import Navbar from '../components/navbar'
+import { Layout, Navbar, Button, Title, Form, FormField } from '../components'
 import { useAppContext } from '../context/state'
 import { login } from '../data/auth'
-import { Button, Title, Form, FormField } from '../design'
 
 export default function Login() {
   const { setToken } = useAppContext()

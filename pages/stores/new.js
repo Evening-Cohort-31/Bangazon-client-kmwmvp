@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router'
 import { useRef } from 'react'
-import Layout from '../../components/layout'
-import Navbar from '../../components/navbar'
+import { Layout, Navbar } from '../../components'
 import { addStore } from '../../data/stores'
 import { useAppContext } from '../../context/state'
 import StoreForm from '../../components/store/form'

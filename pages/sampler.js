@@ -1,4 +1,4 @@
-import { BulmaSampler } from "../design/bulma-reference/BulmaSampler"
+import { BulmaSampler } from "../components/design-system/bulma-reference/BulmaSampler"
 
 export default function SamplerPage() {
     return <BulmaSampler />

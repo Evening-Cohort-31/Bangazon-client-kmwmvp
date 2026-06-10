@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router'
 import { useRef, useEffect, useState } from 'react'
-import Layout from '../../../components/layout'
-import Navbar from '../../../components/navbar'
+import { Layout, Navbar } from '../../../components'
 import { editStore, getStoreById } from '../../../data/stores'
 import StoreForm from '../../../components/store/form'
 

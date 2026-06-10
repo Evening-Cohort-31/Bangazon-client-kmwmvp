@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react'
-import CardLayout from '../components/card-layout'
-import Layout from '../components/layout'
-import Navbar from '../components/navbar'
+import { CardLayout, Navbar, Layout } from '../components'
 import { ProductCard } from '../components/product/card'
 import { StoreCard } from '../components/store/card'
 import { useAppContext } from '../context/state'
@@ -22,8 +20,8 @@ export default function Profile() {
     })
   }, [])
 
-  useEffect(()=> {getRecommendations().then ((data) =>setRecommendations(data))}, [])
-  useEffect(()=> {getRecommendedToMe().then ((data) => setRecommendedToMe(data))}, [])
+  useEffect(() => { getRecommendations().then((data) => setRecommendations(data)) }, [])
+  useEffect(() => { getRecommendedToMe().then((data) => setRecommendedToMe(data)) }, [])
 
   return (
     <>
@@ -43,9 +41,9 @@ export default function Profile() {
         <div className="columns is-multiline">
           {
             recommendations?.map(recommendation => (
-              <ProductCard product={recommendation.product} key={recommendation.id} 
-              
-              width="is-one-third" />
+              <ProductCard product={recommendation.product} key={recommendation.id}
+
+                width="is-one-third" />
 
             ))
           }

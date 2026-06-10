@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { getCategories } from '../data/products'
-import { Button, FormField, FormSelect } from '../design'
+import { Button, FormField, FormSelect } from './design-system'
 
 export default function Filter({ productCount, onSearch, locations }) {
   const refEls = {

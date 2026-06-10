@@ -3,7 +3,7 @@ import {
   Button, Modal, Card, Tag, Notification, PageHeader, Loading,
   IconButton, Form, FormField, FormSelect, FormTextarea, FormActions,
   Title, Subtitle, Text, MutedText, SmallText, Container,
-} from "../../design"
+} from "../"
 
 // ─────────────────────────────────────────────────────────────────────────────
 // BulmaSampler — Bangazon Design System Reference

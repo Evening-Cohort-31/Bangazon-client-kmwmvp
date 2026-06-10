@@ -1,8 +1,5 @@
 import { useEffect, useState } from 'react'
-import CardLayout from '../components/card-layout'
-import Layout from '../components/layout'
-import Navbar from '../components/navbar'
-import Table from '../components/table'
+import { CardLayout, Navbar, Layout, Table } from '../components'
 import { getOrders } from '../data/orders'
 
 export default function Orders() {
