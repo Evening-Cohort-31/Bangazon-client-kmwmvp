@@ -27,10 +27,24 @@ export default function ProductDetail() {
   }
 
   useEffect(() => {
-    if (id) {
-      refresh()
+    // Wait until the dynamic route has a product ID before making the request.
+    if (!router.isReady || !id) return
+
+    // Prevent an outdated request from updating the page after navigation.
+    let ignore = false
+    setProduct(null)
+
+    getProductById(id).then(productData => {
+      if (!ignore && productData) {
+        setProduct(productData)
+      }
+    })
+
+    // Invalidate this request when the component unmounts or the product ID changes.
+    return () => {
+      ignore = true
     }
-  }, [id])
+  }, [router.isReady, id])
 
   return (
     <div className="columns is-centered">
