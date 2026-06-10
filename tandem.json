@@ -39,6 +39,12 @@
       "scope": "general",
       "purpose": "System design, codebase map, entry points, component breakdown, API endpoints, infrastructure, and key technical decisions for the Bangazon Next.js client",
       "tags": ["architecture", "system-design", "conventions", "data-model"]
+    },
+    {
+      "path": "dev-docs/TypeScript_Learning_Spike.md",
+      "scope": "general",
+      "purpose": "TypeScript setup guide and component conversion examples for the Bangazon learning spike; covers Vite setup, Next.js retrofit, and converting design components",
+      "tags": ["typescript", "learning", "setup", "components"]
     }
   ]
 }
