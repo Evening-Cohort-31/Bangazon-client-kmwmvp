@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { CardLayout, Navbar, Layout } from "../components";
+import { CardLayout, Navbar, Layout, Button } from "../components";
 import CartDetail from "../components/order/detail";
 import CompleteFormModal from "../components/order/form-modal";
 import { completeCurrentOrder, getCart } from "../data/orders";
@@ -12,6 +12,9 @@ export default function Cart() {
   const [paymentTypes, setPaymentTypes] = useState([]);
   const [showCompleteForm, setShowCompleteForm] = useState(false);
   const router = useRouter();
+
+  // Check if the cart has items
+  const hasItems = (cart.lineitems?.length ?? 0) > 0;
 
   const refresh = () => {
     getCart().then((cartData) => {
@@ -37,6 +40,9 @@ export default function Cart() {
   };
 
   const emptyCart = () => {
+    // Only allow emptying the cart if there are items in it
+    if (!hasItems) return;
+
     if (
       window.confirm(
         "Are you sure you want to delete all the items in your cart?",
@@ -52,6 +58,13 @@ export default function Cart() {
     removeProductFromCart(lineItemId).then(refresh);
   };
 
+  const openCompleteForm = () => {
+    // Only allow opening the complete form if there are items in the cart
+    if (hasItems) {
+      setShowCompleteForm(true);
+    }
+  };
+
   return (
     <>
       <CompleteFormModal
@@ -63,15 +76,20 @@ export default function Cart() {
       <CardLayout title="Your Cart">
         <CartDetail cart={cart} removeProduct={removeProduct} />
         <>
-          <a
+          <Button
             className="card-footer-item"
-            onClick={() => setShowCompleteForm(true)}
+            onClick={openCompleteForm}
+            disabled={!hasItems}
           >
             Complete Purchase
-          </a>
-          <a className="card-footer-item" onClick={emptyCart}>
+          </Button>
+          <Button
+            className="card-footer-item"
+            onClick={emptyCart}
+            disabled={!hasItems}
+          >
             Delete Cart
-          </a>
+          </Button>
         </>
       </CardLayout>
     </>
