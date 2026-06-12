@@ -11,7 +11,12 @@ export function ProductCard({ product, removeProduct, isOwner = false, width="is
         </div>
         <header className="card-header">
           <p className="card-header-title">
-            <Link href={`/products/${product.id}`}>{product.name} - ${product.price}</Link>
+            <Link
+              href={{ pathname: '/products/[id]', query: { id: product.id } }}
+              as={`/products/${product.id}`}
+            >
+              {product.name} - ${product.price}
+            </Link>
           </p>
         </header>
         <div className="card-content">
@@ -22,7 +27,13 @@ export function ProductCard({ product, removeProduct, isOwner = false, width="is
         {
           isOwner ?
             <footer className="card-footer">
-              <Link href={`/products/${product.id}/edit`} className="card-footer-item">Edit</Link>
+              <Link
+                href={{ pathname: '/products/[id]/edit', query: { id: product.id } }}
+                as={`/products/${product.id}/edit`}
+                className="card-footer-item"
+              >
+                Edit
+              </Link>
               <a onClick={() => removeProduct(product.id)} className="card-footer-item">Delete</a>
             </footer>
             :

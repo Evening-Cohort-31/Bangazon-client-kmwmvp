@@ -21,7 +21,15 @@ export default function NewStore() {
         ...profile,
         store: res
       })
-      router.push(`/stores/${res.id}`)
+      // After creating the store, replace the form page in browser history
+      // so the Back button does not return to the submitted form.
+      router.replace(
+        {
+          pathname: '/stores/[id]',
+          query: { id: res.id }
+        },
+        `/stores/${res.id}`
+      )
     })
   }
 
