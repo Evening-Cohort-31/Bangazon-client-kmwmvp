@@ -86,6 +86,29 @@ export function rateProduct(productId, rating) {
   })
 }
 
+
+export function getProductRating(productId) {
+  return fetchWithResponse(`products/${productId}/rate_product`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Token ${localStorage.getItem('token')}`
+    },
+
+  })
+}
+
+export function changeProductRating(productId, rating) {
+  return fetchWithResponse(`products/${productId}/rate_product`, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Token ${localStorage.getItem('token')}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(rating)
+  })
+}
+
+
 export function addProduct(product) {
   return fetchWithResponse(`products`, {
     method: 'POST',

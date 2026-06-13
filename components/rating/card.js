@@ -5,15 +5,15 @@ export function RatingCard({ rating }) {
     <div className="tile is-child">
       <article className="media box is-align-items-center">
         <figure className="media-left">
-          <Rating initialValue={rating.score} readonly={true} />
+          <Rating initialValue={rating} readonly={true} />
         </figure>
-        <div className="media-content">
+        {/* <div className="media-content">
           <div className="content">
             <p>
               {rating.review}
             </p>
-          </div>
-        </div>
+          </div> */}
+        {/* </div> */}
       </article>
     </div>
   )
