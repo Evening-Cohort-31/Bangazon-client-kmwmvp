@@ -3,7 +3,7 @@
 // Pass children to render a custom control (Select, Textarea, etc.) instead of the default input
 // Pass error (string) to show a red helper message and highlight the input border
 
-export const FormField = ({ label, type = "text", placeholder = "", name, inputRef, defaultValue, children, error }) => {
+export const FormField = ({ label, type = "text", placeholder = "", name, inputRef, defaultValue, children, error, onChange, inputMode }) => {
   return (
     <div className="field">
       <label className="label" htmlFor={name}>{label}</label>
@@ -17,6 +17,8 @@ export const FormField = ({ label, type = "text", placeholder = "", name, inputR
             placeholder={placeholder}
             defaultValue={defaultValue}
             ref={inputRef}
+            onChange={onChange}
+            inputMode={inputMode}
           />
         )}
       </div>
