@@ -1,20 +1,39 @@
 import { useState, useEffect } from 'react'
-import { rateProduct } from '../../data/products'
+import { rateProduct, changeProductRating, getProductRating } from '../../data/products'
+import { getUserProfile } from '../../data/auth'
 import { RatingsContainer } from './container'
 import { Header } from './header'
+import { useParams } from 'next/navigation'
 
 export function Ratings({ average_rating, refresh, ratings = [], number_purchased, likes = [] }) {
-  const [productId, setProductId] = useState(0)
-  const saveRating = (newRating) => {
-    rateProduct(productId, newRating).then(refresh)
 
-  }
+  const product = useParams()
+  const productId = product.id
+  const [currentRating, setCurrentRating] = useState(null)
 
   useEffect(() => {
-    if (ratings.length) {
-      setProductId(ratings[0].product)
+    getProductRating(productId).then(rating => {
+      if (rating) {setCurrentRating(rating.rating)}
+      
+    })
+    .catch(err => {
+      if (err.status === 404) {
+        setCurrentRating(null)
+      }
+    })
+  }, [])
+
+  const saveRating = (newRating) => {
+    let existingRating = currentRating
+    if (existingRating === null) {
+      rateProduct(productId, newRating)
+      .then(() => { setCurrentRating(newRating.rating); refresh() })
+      
+    } else {
+      changeProductRating(productId, newRating).then(refresh)
+      
     }
-  }, [ratings])
+  }
 
   return (
     <div className="tile is-ancestor is-flex-wrap-wrap">
@@ -24,7 +43,9 @@ export function Ratings({ average_rating, refresh, ratings = [], number_purchase
         numberPurchased={number_purchased}
         likesLength={likes.length}
       />
-      <RatingsContainer ratings={ratings} saveRating={saveRating} />
+      <RatingsContainer 
+          rating={currentRating} 
+          saveRating={saveRating} />
     </div>
   )
 }

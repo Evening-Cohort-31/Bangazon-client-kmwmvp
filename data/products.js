@@ -76,7 +76,7 @@ export function deleteCart() {
 }
 
 export function rateProduct(productId, rating) {
-  return fetchWithResponse(`products/${productId}/rate-product`, {
+  return fetchWithResponse(`products/${productId}/rate_product`, {
     method: 'POST',
     headers: {
       Authorization: `Token ${localStorage.getItem('token')}`,
@@ -85,6 +85,29 @@ export function rateProduct(productId, rating) {
     body: JSON.stringify(rating)
   })
 }
+
+
+export function getProductRating(productId) {
+  return fetchWithResponse(`products/${productId}/rate_product`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Token ${localStorage.getItem('token')}`
+    },
+
+  })
+}
+
+export function changeProductRating(productId, rating) {
+  return fetchWithResponse(`products/${productId}/rate_product`, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Token ${localStorage.getItem('token')}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(rating)
+  })
+}
+
 
 export function addProduct(product) {
   return fetchWithResponse(`products`, {
