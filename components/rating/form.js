@@ -1,9 +1,9 @@
 import { Rating } from 'react-simple-star-rating'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 
 export default function RatingForm({ saveRating, rating }) {
-  const [newRating, setNewRating] = useState(rating ?? 0)
+  const [newRating, setNewRating] = useState(rating)
   const [comment, setComment] = useState("")
 
   // Previously review comments were included in the Rating payload. Now only the rating integer is sent when a customer clicks "submit rating"
@@ -12,6 +12,10 @@ export default function RatingForm({ saveRating, rating }) {
       rating: newRating
     })
   }
+
+  useEffect(()=>{
+    setNewRating(rating)
+  },[rating])
 
   return (
     <div className="tile is-child ">
