@@ -32,7 +32,13 @@ export default function Navbar() {
           {
             profile.store ?
               <>
-                <Link href={`/stores/${profile.store.id}`} className="navbar-item">View Your Store</Link>
+                <Link
+                  href={{ pathname: '/stores/[id]', query: { id: profile.store.id } }}
+                  as={`/stores/${profile.store.id}`}
+                  className="navbar-item"
+                >
+                  View Your Store
+                </Link>
                 <Link href="/products/new" className="navbar-item">Add a new Product</Link>
               </>
               :

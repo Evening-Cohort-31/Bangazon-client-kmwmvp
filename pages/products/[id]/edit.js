@@ -35,12 +35,11 @@ export default function EditProduct() {
 
   useEffect(() => {
     if (product) {
-      const { name, description, price, category, location, quantity } = formEl.current
+      const { name, description, price, location, quantity } = formEl.current
 
       name.value = product.name
       description.value = product.description
       price.value = product.price
-      category.value = product.category.id
       location.value = product.location
       quantity.value = product.quantity
     }
@@ -49,12 +48,15 @@ export default function EditProduct() {
 
   const saveProduct = () => {
     const { name, description, price, category, location, quantity } = formEl.current
+    const categoryIds = Array.from(category.selectedOptions)
+      .map(option => parseInt(option.value, 10))
+      .filter(categoryId => categoryId > 0)
 
     const product = {
       name: name.value,
       description: description.value,
       price: price.value,
-      categoryId: category.value,
+      category_ids: categoryIds,
       location: location.value,
       quantity: quantity.value
     }
@@ -62,7 +64,15 @@ export default function EditProduct() {
 
     if (!product) return
 
-    editProduct(id, product).then(() => router.push(`/products/${id}`))
+    editProduct(id, product).then(() => {
+      router.replace(
+        {
+          pathname: '/products/[id]',
+          query: { id }
+        },
+        `/products/${id}`
+      )
+    })
   }
 
   return (
@@ -71,6 +81,7 @@ export default function EditProduct() {
       saveEvent={saveProduct}
       title="Edit product"
       router={router}
+      initialCategoryIds={product?.categories?.map(category => category.id)}
     ></ProductForm>
   )
 }

@@ -60,7 +60,13 @@ export default function EditStore() {
       name: nameEl.current.value,
       description: descriptionEl.current.value
     }).then(() => {
-      router.push(`/stores/${id}`)
+      router.replace(
+        {
+          pathname: '/stores/[id]',
+          query: { id }
+        },
+        `/stores/${id}`
+      )
     })
   }
 
